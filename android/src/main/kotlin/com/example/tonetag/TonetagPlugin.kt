@@ -5,9 +5,6 @@ import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import com.tonetag.tone.SoundPlayer
 import com.tonetag.tone.SoundRecorder
 import com.tonetag.tone.TTUtils
@@ -21,7 +18,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 /** TonetagPlugin */
-class TonetagPlugin: FlutterPlugin, MethodCallHandler, LifecycleOwner {
+class TonetagPlugin: FlutterPlugin, MethodCallHandler {
   companion object {
     const val METHOD_CHANNEL = "tonetag"
     const val EVENT_CHANNEL_IS_SENDING_DATA = "tonetag_event_channel/isSendingData"
@@ -32,8 +29,6 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler, LifecycleOwner {
     const val ULTRASONIC_10_BYTE = "ultrasonic10Byte"
     const val IVR_14_Byte = "ivr14Byte"
   }
-
-  private lateinit var lifecycleRegistry: LifecycleRegistry
 
   private lateinit var context: Context;
   private lateinit var methodChannel : MethodChannel
@@ -81,8 +76,6 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler, LifecycleOwner {
   private val key: String = "577b2fa0000c2daa7153f49b122903eca92dedddbec56ce7db5aba3284ecff81";
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    lifecycleRegistry = LifecycleRegistry(this)
-    lifecycleRegistry.currentState = Lifecycle.State.CREATED
     methodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, METHOD_CHANNEL)
     ecOnDataReceived = EventChannel(flutterPluginBinding.binaryMessenger, EVENT_CHANNEL_ON_DATA_RECEIVED)
     ecIsSendingData = EventChannel(flutterPluginBinding.binaryMessenger, EVENT_CHANNEL_IS_SENDING_DATA)
@@ -179,13 +172,11 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler, LifecycleOwner {
       val volume = call.argument<Int>("volume") ?: 50;
 
       playTune(data, player, volume);
-      result.success(null);
 
       soundPlayer?.setTTOnPlaybackFinishedListener(object: SoundPlayer.TTOnPlaybackFinishedListener {
         override fun TTOnPlaybackFinished(p0: Array<out String>?, p1: Int, p2: IntArray?) {
           try {
             playTune(data, player, volume);
-            toneGenerator.startTone(ToneGenerator.TONE_DTMF_9, 60)
           } catch (e: java.lang.RuntimeException) {
             result.error("null", e.message, e.toString());
           }
@@ -246,10 +237,6 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler, LifecycleOwner {
         esOnDataReceived?.success(null);
       }
     });
-  }
-
-  override fun getLifecycle(): Lifecycle {
-    return lifecycleRegistry;
   }
 
   private fun playTune(data: String?, player: String?, volume: Int) {

@@ -2,11 +2,7 @@ import 'enums/tonetag_player_type.dart';
 import 'tonetag_platform_interface.dart';
 
 class Tonetag {
-  Future<String?> getPlatformVersion() {
-    return TonetagPlatform.instance.getPlatformVersion();
-  }
-
-  static Future<void> initializeTonetag() {
+  static Future<void> initialize() {
     return TonetagPlatform.instance.initializeTonetag();
   }
 
