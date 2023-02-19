@@ -1,4 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:tonetag/enums/tonetag_channel_type.dart';
 import 'package:tonetag/enums/tonetag_player_type.dart';
 
 import 'tonetag_method_channel.dart';
@@ -32,6 +33,7 @@ abstract class TonetagPlatform extends PlatformInterface {
   Future<void> startSendingData({
     required final String data,
     required final TonetagPlayer player,
+    required final TonetagChannel channel,
     final int? volume = 80,
   });
 

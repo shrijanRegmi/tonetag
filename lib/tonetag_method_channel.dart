@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:tonetag/enums/tonetag_player_type.dart';
 
+import 'enums/tonetag_channel_type.dart';
 import 'tonetag_platform_interface.dart';
 
 /// An implementation of [TonetagPlatform] that uses method channels.
@@ -41,11 +44,15 @@ class MethodChannelTonetag extends TonetagPlatform {
   Future<void> startSendingData({
     required String data,
     required TonetagPlayer player,
+    required TonetagChannel channel,
     int? volume = 50,
   }) {
+    _checkInputData(data);
+
     final dataToSend = <String, dynamic>{
       'data': data,
       'player': ksTonetagPlayerName[player],
+      'channel': channel.index,
       'volume': volume,
     };
 
@@ -83,4 +90,32 @@ class MethodChannelTonetag extends TonetagPlatform {
       onDataReceivedEventChannel.receiveBroadcastStream().map(
             (event) => Map<String, dynamic>.from(event),
           );
+
+  void _checkInputData(final String data) {
+    const numericLength = 10;
+    const alphaNumericLength = 5;
+
+    final regexNumeric = RegExp('[0-9]\$');
+
+    var numericLengthExceeded = false;
+    var alphaNumericLengthExceeded = false;
+
+    if (regexNumeric.hasMatch(data)) {
+      numericLengthExceeded = data.length > numericLength;
+    } else {
+      alphaNumericLengthExceeded = data.length > alphaNumericLength;
+    }
+
+    if (numericLengthExceeded) {
+      log(
+        'Warning: The numeric data $data maynot be received from a multi-receiver because it exceeded length $numericLength',
+        name: 'startSendingData',
+      );
+    } else if (alphaNumericLengthExceeded) {
+      log(
+        'Warning: The alphanumeric data $data maynot be received from a multi-receiver because it exceeded length $alphaNumericLength',
+        name: 'startSendingData',
+      );
+    }
+  }
 }

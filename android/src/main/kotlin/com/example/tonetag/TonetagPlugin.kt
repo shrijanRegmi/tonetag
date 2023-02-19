@@ -169,14 +169,15 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler {
     if(soundPlayer?.isPlaying == false) {
       val data = call.argument<String>("data")
       val player = call.argument<String>("player");
+      val channel = call.argument<Int>("channel") ?: 0;
       val volume = call.argument<Int>("volume") ?: 50;
 
-      playTune(data, player, volume);
+      playTune(data, player, channel, volume);
 
       soundPlayer?.setTTOnPlaybackFinishedListener(object: SoundPlayer.TTOnPlaybackFinishedListener {
         override fun TTOnPlaybackFinished(p0: Array<out String>?, p1: Int, p2: IntArray?) {
           try {
-            playTune(data, player, volume);
+            playTune(data, player, channel, volume);
           } catch (e: java.lang.RuntimeException) {
             result.error("null", e.message, e.toString());
           }
@@ -239,7 +240,12 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler {
     });
   }
 
-  private fun playTune(data: String?, player: String?, volume: Int) {
+  private fun playTune(
+    data: String?,
+    player: String?,
+    channel: Int,
+    volume: Int,
+  ) {
     var vol = volume;
     if(vol > 100) {
       vol = 100
@@ -251,7 +257,7 @@ class TonetagPlugin: FlutterPlugin, MethodCallHandler {
 
     when(player) {
       SONIC_30_BYTE -> soundPlayer?.TTPlay30SString(data, vol)
-      ULTRASONIC_10_BYTE -> soundPlayer?.TTPlay10USString(data, 0, vol)
+      ULTRASONIC_10_BYTE -> soundPlayer?.TTPlay10USString(data, channel, vol)
       IVR_14_Byte -> soundPlayer?.TTPlay14IVRString(data, vol)
       else -> soundPlayer?.TTPlay30SString(data, vol)
     }

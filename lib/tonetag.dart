@@ -1,5 +1,9 @@
+import 'enums/tonetag_channel_type.dart';
 import 'enums/tonetag_player_type.dart';
 import 'tonetag_platform_interface.dart';
+
+export 'enums/tonetag_channel_type.dart';
+export 'enums/tonetag_player_type.dart';
 
 class Tonetag {
   static Future<void> initialize() {
@@ -9,11 +13,13 @@ class Tonetag {
   Future<void> startSendingData({
     required final String data,
     required final TonetagPlayer player,
+    required final TonetagChannel channel,
     final int? volume = 80,
   }) {
     return TonetagPlatform.instance.startSendingData(
       data: data,
       player: player,
+      channel: channel,
       volume: volume,
     );
   }
