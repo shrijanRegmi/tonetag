@@ -5,6 +5,7 @@ class RoundedWaveButton extends StatefulWidget {
   final double size;
   final String text;
   final bool animate;
+  final Color bgColor;
   final Function(bool)? onPressed;
 
   const RoundedWaveButton({
@@ -12,6 +13,7 @@ class RoundedWaveButton extends StatefulWidget {
     required this.animate,
     this.size = 200.0,
     this.text = '',
+    this.bgColor = Colors.blue,
     this.onPressed,
   });
 
@@ -109,6 +111,7 @@ class _RoundedWaveButtonState extends State<RoundedWaveButton>
             child: _circularContainer(
               size: widget.size,
               text: widget.text,
+              color: widget.bgColor,
             ).onPressed(() {
               widget.onPressed?.call(
                 _animationController.isAnimating,
@@ -138,6 +141,7 @@ class _RoundedWaveButtonState extends State<RoundedWaveButton>
           text,
           style: const TextStyle(
             color: Colors.white,
+            fontSize: 16.0,
           ),
         ),
       ),
