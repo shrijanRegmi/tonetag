@@ -20,5 +20,6 @@ class TonetagProviderState with _$TonetagProviderState {
     @Default(<String>[]) final List<String> receivedRequests,
     @Default(<TransactionSuccess>[])
         final List<TransactionSuccess> transactionSuccesses,
+    @Default(<String, int>{}) final Map<String, int> receiveRequestsCounter,
   }) = _TonetagProviderState;
 }

@@ -120,6 +120,12 @@ class TonetagProvider extends StateNotifier<TonetagProviderState> {
           state.data != originalData) {
         setReceivedData(originalData);
         acknowledgeReceiveRequest(originalData);
+      } else {
+        setReceiveRequestsCounter(originalData);
+        final thisDataCount = state.receiveRequestsCounter[originalData] ?? 0;
+        if (thisDataCount > 5) {
+          acknowledgeReceiveRequest(data);
+        }
       }
     } else if (data.startsWith(ksCodeP2PAcknowledge)) {
       final reversed = originalData.split('').reversed.join();
@@ -134,6 +140,7 @@ class TonetagProvider extends StateNotifier<TonetagProviderState> {
   void acknowledgeReceiveRequest(final String data) {
     final reversedData = data.split('').reversed.join();
     setPaymentState(TonetagPaymentState.acknowledging);
+    resetReceiveRequestsCounter(data);
 
     Future.delayed(const Duration(milliseconds: 1000), () {
       if (mounted) {
@@ -241,5 +248,20 @@ class TonetagProvider extends StateNotifier<TonetagProviderState> {
   void setTransactionSuccesses(final TransactionSuccess newVal) =>
       state = state.copyWith(
         transactionSuccesses: [...state.transactionSuccesses, newVal],
+      );
+
+  void setReceiveRequestsCounter(final String receiverId) =>
+      state = state.copyWith(
+        receiveRequestsCounter:
+            Map<String, int>.from(state.receiveRequestsCounter)
+              ..addAll({
+                receiverId: (state.receiveRequestsCounter[receiverId] ?? 0) + 1,
+              }),
+      );
+  void resetReceiveRequestsCounter(final String receiverId) =>
+      state = state.copyWith(
+        receiveRequestsCounter:
+            Map<String, int>.from(state.receiveRequestsCounter)
+              ..addAll({receiverId: 0}),
       );
 }

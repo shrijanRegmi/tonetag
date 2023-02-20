@@ -26,6 +26,8 @@ mixin _$TonetagProviderState {
   List<String> get receivedRequests => throw _privateConstructorUsedError;
   List<TransactionSuccess> get transactionSuccesses =>
       throw _privateConstructorUsedError;
+  Map<String, int> get receiveRequestsCounter =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TonetagProviderStateCopyWith<TonetagProviderState> get copyWith =>
@@ -46,7 +48,8 @@ abstract class $TonetagProviderStateCopyWith<$Res> {
       TextEditingController amountController,
       TonetagPaymentState paymentState,
       List<String> receivedRequests,
-      List<TransactionSuccess> transactionSuccesses});
+      List<TransactionSuccess> transactionSuccesses,
+      Map<String, int> receiveRequestsCounter});
 }
 
 /// @nodoc
@@ -71,6 +74,7 @@ class _$TonetagProviderStateCopyWithImpl<$Res,
     Object? paymentState = null,
     Object? receivedRequests = null,
     Object? transactionSuccesses = null,
+    Object? receiveRequestsCounter = null,
   }) {
     return _then(_value.copyWith(
       data: null == data
@@ -105,6 +109,10 @@ class _$TonetagProviderStateCopyWithImpl<$Res,
           ? _value.transactionSuccesses
           : transactionSuccesses // ignore: cast_nullable_to_non_nullable
               as List<TransactionSuccess>,
+      receiveRequestsCounter: null == receiveRequestsCounter
+          ? _value.receiveRequestsCounter
+          : receiveRequestsCounter // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
     ) as $Val);
   }
 }
@@ -125,7 +133,8 @@ abstract class _$$_TonetagProviderStateCopyWith<$Res>
       TextEditingController amountController,
       TonetagPaymentState paymentState,
       List<String> receivedRequests,
-      List<TransactionSuccess> transactionSuccesses});
+      List<TransactionSuccess> transactionSuccesses,
+      Map<String, int> receiveRequestsCounter});
 }
 
 /// @nodoc
@@ -147,6 +156,7 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
     Object? paymentState = null,
     Object? receivedRequests = null,
     Object? transactionSuccesses = null,
+    Object? receiveRequestsCounter = null,
   }) {
     return _then(_$_TonetagProviderState(
       data: null == data
@@ -181,6 +191,10 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
           ? _value._transactionSuccesses
           : transactionSuccesses // ignore: cast_nullable_to_non_nullable
               as List<TransactionSuccess>,
+      receiveRequestsCounter: null == receiveRequestsCounter
+          ? _value._receiveRequestsCounter
+          : receiveRequestsCounter // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
     ));
   }
 }
@@ -197,9 +211,11 @@ class _$_TonetagProviderState implements _TonetagProviderState {
       this.paymentState = TonetagPaymentState.paying,
       final List<String> receivedRequests = const <String>[],
       final List<TransactionSuccess> transactionSuccesses =
-          const <TransactionSuccess>[]})
+          const <TransactionSuccess>[],
+      final Map<String, int> receiveRequestsCounter = const <String, int>{}})
       : _receivedRequests = receivedRequests,
-        _transactionSuccesses = transactionSuccesses;
+        _transactionSuccesses = transactionSuccesses,
+        _receiveRequestsCounter = receiveRequestsCounter;
 
   @override
   final String data;
@@ -234,9 +250,19 @@ class _$_TonetagProviderState implements _TonetagProviderState {
     return EqualUnmodifiableListView(_transactionSuccesses);
   }
 
+  final Map<String, int> _receiveRequestsCounter;
+  @override
+  @JsonKey()
+  Map<String, int> get receiveRequestsCounter {
+    if (_receiveRequestsCounter is EqualUnmodifiableMapView)
+      return _receiveRequestsCounter;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_receiveRequestsCounter);
+  }
+
   @override
   String toString() {
-    return 'TonetagProviderState(data: $data, player: $player, channel: $channel, volume: $volume, amountController: $amountController, paymentState: $paymentState, receivedRequests: $receivedRequests, transactionSuccesses: $transactionSuccesses)';
+    return 'TonetagProviderState(data: $data, player: $player, channel: $channel, volume: $volume, amountController: $amountController, paymentState: $paymentState, receivedRequests: $receivedRequests, transactionSuccesses: $transactionSuccesses, receiveRequestsCounter: $receiveRequestsCounter)';
   }
 
   @override
@@ -255,7 +281,9 @@ class _$_TonetagProviderState implements _TonetagProviderState {
             const DeepCollectionEquality()
                 .equals(other._receivedRequests, _receivedRequests) &&
             const DeepCollectionEquality()
-                .equals(other._transactionSuccesses, _transactionSuccesses));
+                .equals(other._transactionSuccesses, _transactionSuccesses) &&
+            const DeepCollectionEquality().equals(
+                other._receiveRequestsCounter, _receiveRequestsCounter));
   }
 
   @override
@@ -268,7 +296,8 @@ class _$_TonetagProviderState implements _TonetagProviderState {
       amountController,
       paymentState,
       const DeepCollectionEquality().hash(_receivedRequests),
-      const DeepCollectionEquality().hash(_transactionSuccesses));
+      const DeepCollectionEquality().hash(_transactionSuccesses),
+      const DeepCollectionEquality().hash(_receiveRequestsCounter));
 
   @JsonKey(ignore: true)
   @override
@@ -280,15 +309,15 @@ class _$_TonetagProviderState implements _TonetagProviderState {
 
 abstract class _TonetagProviderState implements TonetagProviderState {
   const factory _TonetagProviderState(
-          {required final String data,
-          required final TonetagPlayer player,
-          required final TonetagChannel channel,
-          required final int volume,
-          required final TextEditingController amountController,
-          final TonetagPaymentState paymentState,
-          final List<String> receivedRequests,
-          final List<TransactionSuccess> transactionSuccesses}) =
-      _$_TonetagProviderState;
+      {required final String data,
+      required final TonetagPlayer player,
+      required final TonetagChannel channel,
+      required final int volume,
+      required final TextEditingController amountController,
+      final TonetagPaymentState paymentState,
+      final List<String> receivedRequests,
+      final List<TransactionSuccess> transactionSuccesses,
+      final Map<String, int> receiveRequestsCounter}) = _$_TonetagProviderState;
 
   @override
   String get data;
@@ -306,6 +335,8 @@ abstract class _TonetagProviderState implements TonetagProviderState {
   List<String> get receivedRequests;
   @override
   List<TransactionSuccess> get transactionSuccesses;
+  @override
+  Map<String, int> get receiveRequestsCounter;
   @override
   @JsonKey(ignore: true)
   _$$_TonetagProviderStateCopyWith<_$_TonetagProviderState> get copyWith =>
