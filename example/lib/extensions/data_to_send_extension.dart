@@ -8,17 +8,19 @@ extension DataToSendExt on String {
 
   String get toOriginal {
     var str = this;
+    if (str.length <= 2) return str;
+
     if (startsWith(ksCodeP2P)) {
-      str = str.replaceFirst(ksCodeP2P, '');
+      str = str.substring(2);
     }
     if (startsWith(ksCodeP2PAcknowledge)) {
-      str = str.replaceAll(ksCodeP2PAcknowledge, '');
+      str = str.substring(2);
     }
     if (startsWith(ksCodeP2PTransactionSuccess)) {
-      str = str.replaceAll(ksCodeP2PTransactionSuccess, '');
+      str = str.substring(2);
     }
     if (startsWith(ksCodeP2PTransactionFailed)) {
-      str = str.replaceAll(ksCodeP2PTransactionFailed, '');
+      str = str.substring(2);
     }
     return str;
   }
