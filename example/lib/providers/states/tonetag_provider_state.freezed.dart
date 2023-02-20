@@ -20,8 +20,12 @@ mixin _$TonetagProviderState {
   TonetagPlayer get player => throw _privateConstructorUsedError;
   TonetagChannel get channel => throw _privateConstructorUsedError;
   int get volume => throw _privateConstructorUsedError;
-  List<String> get receivedData => throw _privateConstructorUsedError;
+  TextEditingController get amountController =>
+      throw _privateConstructorUsedError;
   TonetagPaymentState get paymentState => throw _privateConstructorUsedError;
+  List<String> get receivedRequests => throw _privateConstructorUsedError;
+  List<TransactionSuccess> get transactionSuccesses =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TonetagProviderStateCopyWith<TonetagProviderState> get copyWith =>
@@ -39,8 +43,10 @@ abstract class $TonetagProviderStateCopyWith<$Res> {
       TonetagPlayer player,
       TonetagChannel channel,
       int volume,
-      List<String> receivedData,
-      TonetagPaymentState paymentState});
+      TextEditingController amountController,
+      TonetagPaymentState paymentState,
+      List<String> receivedRequests,
+      List<TransactionSuccess> transactionSuccesses});
 }
 
 /// @nodoc
@@ -61,8 +67,10 @@ class _$TonetagProviderStateCopyWithImpl<$Res,
     Object? player = null,
     Object? channel = null,
     Object? volume = null,
-    Object? receivedData = null,
+    Object? amountController = null,
     Object? paymentState = null,
+    Object? receivedRequests = null,
+    Object? transactionSuccesses = null,
   }) {
     return _then(_value.copyWith(
       data: null == data
@@ -81,14 +89,22 @@ class _$TonetagProviderStateCopyWithImpl<$Res,
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
               as int,
-      receivedData: null == receivedData
-          ? _value.receivedData
-          : receivedData // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      amountController: null == amountController
+          ? _value.amountController
+          : amountController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
       paymentState: null == paymentState
           ? _value.paymentState
           : paymentState // ignore: cast_nullable_to_non_nullable
               as TonetagPaymentState,
+      receivedRequests: null == receivedRequests
+          ? _value.receivedRequests
+          : receivedRequests // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      transactionSuccesses: null == transactionSuccesses
+          ? _value.transactionSuccesses
+          : transactionSuccesses // ignore: cast_nullable_to_non_nullable
+              as List<TransactionSuccess>,
     ) as $Val);
   }
 }
@@ -106,8 +122,10 @@ abstract class _$$_TonetagProviderStateCopyWith<$Res>
       TonetagPlayer player,
       TonetagChannel channel,
       int volume,
-      List<String> receivedData,
-      TonetagPaymentState paymentState});
+      TextEditingController amountController,
+      TonetagPaymentState paymentState,
+      List<String> receivedRequests,
+      List<TransactionSuccess> transactionSuccesses});
 }
 
 /// @nodoc
@@ -125,8 +143,10 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
     Object? player = null,
     Object? channel = null,
     Object? volume = null,
-    Object? receivedData = null,
+    Object? amountController = null,
     Object? paymentState = null,
+    Object? receivedRequests = null,
+    Object? transactionSuccesses = null,
   }) {
     return _then(_$_TonetagProviderState(
       data: null == data
@@ -145,14 +165,22 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
               as int,
-      receivedData: null == receivedData
-          ? _value._receivedData
-          : receivedData // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      amountController: null == amountController
+          ? _value.amountController
+          : amountController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
       paymentState: null == paymentState
           ? _value.paymentState
           : paymentState // ignore: cast_nullable_to_non_nullable
               as TonetagPaymentState,
+      receivedRequests: null == receivedRequests
+          ? _value._receivedRequests
+          : receivedRequests // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      transactionSuccesses: null == transactionSuccesses
+          ? _value._transactionSuccesses
+          : transactionSuccesses // ignore: cast_nullable_to_non_nullable
+              as List<TransactionSuccess>,
     ));
   }
 }
@@ -165,9 +193,13 @@ class _$_TonetagProviderState implements _TonetagProviderState {
       required this.player,
       required this.channel,
       required this.volume,
-      final List<String> receivedData = const <String>[],
-      this.paymentState = TonetagPaymentState.paying})
-      : _receivedData = receivedData;
+      required this.amountController,
+      this.paymentState = TonetagPaymentState.paying,
+      final List<String> receivedRequests = const <String>[],
+      final List<TransactionSuccess> transactionSuccesses =
+          const <TransactionSuccess>[]})
+      : _receivedRequests = receivedRequests,
+        _transactionSuccesses = transactionSuccesses;
 
   @override
   final String data;
@@ -177,22 +209,34 @@ class _$_TonetagProviderState implements _TonetagProviderState {
   final TonetagChannel channel;
   @override
   final int volume;
-  final List<String> _receivedData;
   @override
-  @JsonKey()
-  List<String> get receivedData {
-    if (_receivedData is EqualUnmodifiableListView) return _receivedData;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_receivedData);
-  }
-
+  final TextEditingController amountController;
   @override
   @JsonKey()
   final TonetagPaymentState paymentState;
+  final List<String> _receivedRequests;
+  @override
+  @JsonKey()
+  List<String> get receivedRequests {
+    if (_receivedRequests is EqualUnmodifiableListView)
+      return _receivedRequests;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_receivedRequests);
+  }
+
+  final List<TransactionSuccess> _transactionSuccesses;
+  @override
+  @JsonKey()
+  List<TransactionSuccess> get transactionSuccesses {
+    if (_transactionSuccesses is EqualUnmodifiableListView)
+      return _transactionSuccesses;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_transactionSuccesses);
+  }
 
   @override
   String toString() {
-    return 'TonetagProviderState(data: $data, player: $player, channel: $channel, volume: $volume, receivedData: $receivedData, paymentState: $paymentState)';
+    return 'TonetagProviderState(data: $data, player: $player, channel: $channel, volume: $volume, amountController: $amountController, paymentState: $paymentState, receivedRequests: $receivedRequests, transactionSuccesses: $transactionSuccesses)';
   }
 
   @override
@@ -204,15 +248,27 @@ class _$_TonetagProviderState implements _TonetagProviderState {
             (identical(other.player, player) || other.player == player) &&
             (identical(other.channel, channel) || other.channel == channel) &&
             (identical(other.volume, volume) || other.volume == volume) &&
-            const DeepCollectionEquality()
-                .equals(other._receivedData, _receivedData) &&
+            (identical(other.amountController, amountController) ||
+                other.amountController == amountController) &&
             (identical(other.paymentState, paymentState) ||
-                other.paymentState == paymentState));
+                other.paymentState == paymentState) &&
+            const DeepCollectionEquality()
+                .equals(other._receivedRequests, _receivedRequests) &&
+            const DeepCollectionEquality()
+                .equals(other._transactionSuccesses, _transactionSuccesses));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data, player, channel, volume,
-      const DeepCollectionEquality().hash(_receivedData), paymentState);
+  int get hashCode => Object.hash(
+      runtimeType,
+      data,
+      player,
+      channel,
+      volume,
+      amountController,
+      paymentState,
+      const DeepCollectionEquality().hash(_receivedRequests),
+      const DeepCollectionEquality().hash(_transactionSuccesses));
 
   @JsonKey(ignore: true)
   @override
@@ -224,12 +280,15 @@ class _$_TonetagProviderState implements _TonetagProviderState {
 
 abstract class _TonetagProviderState implements TonetagProviderState {
   const factory _TonetagProviderState(
-      {required final String data,
-      required final TonetagPlayer player,
-      required final TonetagChannel channel,
-      required final int volume,
-      final List<String> receivedData,
-      final TonetagPaymentState paymentState}) = _$_TonetagProviderState;
+          {required final String data,
+          required final TonetagPlayer player,
+          required final TonetagChannel channel,
+          required final int volume,
+          required final TextEditingController amountController,
+          final TonetagPaymentState paymentState,
+          final List<String> receivedRequests,
+          final List<TransactionSuccess> transactionSuccesses}) =
+      _$_TonetagProviderState;
 
   @override
   String get data;
@@ -240,9 +299,13 @@ abstract class _TonetagProviderState implements TonetagProviderState {
   @override
   int get volume;
   @override
-  List<String> get receivedData;
+  TextEditingController get amountController;
   @override
   TonetagPaymentState get paymentState;
+  @override
+  List<String> get receivedRequests;
+  @override
+  List<TransactionSuccess> get transactionSuccesses;
   @override
   @JsonKey(ignore: true)
   _$$_TonetagProviderStateCopyWith<_$_TonetagProviderState> get copyWith =>

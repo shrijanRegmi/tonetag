@@ -21,6 +21,7 @@ dependencies:
   hooks_riverpod: ^2.2.0
   flutter_hooks: ^0.18.5+1
   freezed_annotation: ^2.2.0
+  get: ^4.6.5
 
   tonetag:
     # When depending on this package from a real application you should use:

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tonetag_example/enums/tonetag_payment_state.dart';
 import 'package:tonetag_example/extensions/widget_extension.dart';
 import 'package:tonetag_example/providers/tonetag_provider.dart';
+import 'package:tonetag_example/utils/string_contants.dart';
 import 'package:tonetag_example/widgets/rounded_wave_button.dart';
+import 'package:tonetag_example/widgets/transaction_dialogs.dart';
 
 class PayOrReceiveScreen extends StatefulHookConsumerWidget {
   const PayOrReceiveScreen({super.key});
@@ -61,7 +64,7 @@ class _PayOrReceiveScreenState extends ConsumerState<PayOrReceiveScreen> {
                   ),
                 ),
                 Opacity(
-                  opacity: state.receivedData.isEmpty ? 0.0 : 1.0,
+                  opacity: state.receivedRequests.isEmpty ? 0.0 : 1.0,
                   child: IconButton(
                     onPressed: notifier.clearReceivedData,
                     splashRadius: 24.0,
@@ -77,7 +80,7 @@ class _PayOrReceiveScreenState extends ConsumerState<PayOrReceiveScreen> {
               height: 20.0,
             ),
             Expanded(
-              child: state.receivedData.isEmpty
+              child: state.receivedRequests.isEmpty
                   ? const Center(
                       child: Text(
                         'This section will automatically listen to\nreceived datas from other devices.\n\n',
@@ -85,16 +88,25 @@ class _PayOrReceiveScreenState extends ConsumerState<PayOrReceiveScreen> {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: state.receivedData.length,
+                      itemCount: state.receivedRequests.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        final data = state.receivedData[index];
+                        final data = state.receivedRequests[index];
                         return ListTile(
                           leading: const Icon(
                             Icons.data_thresholding_outlined,
                           ),
                           title: Text(data),
-                        );
+                        ).onPressed(() {
+                          Get.dialog(
+                            TransactionDiaglog.sendAmount(
+                              controller: state.amountController,
+                              onPressedDone: () => notifier.sendAmount(
+                                data.replaceAll(ksCodeP2P, ''),
+                              ),
+                            ),
+                          );
+                        });
                       },
                     ),
             ),
