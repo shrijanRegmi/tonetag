@@ -22,7 +22,9 @@ mixin _$TonetagProviderState {
   int get volume => throw _privateConstructorUsedError;
   TextEditingController get amountController =>
       throw _privateConstructorUsedError;
-  TonetagPaymentState get paymentState => throw _privateConstructorUsedError;
+  TonetagConnectionState get connectionState =>
+      throw _privateConstructorUsedError;
+  TransferedDataType get sentDataType => throw _privateConstructorUsedError;
   List<String> get receivedRequests => throw _privateConstructorUsedError;
   List<TransactionSuccess> get transactionSuccesses =>
       throw _privateConstructorUsedError;
@@ -46,7 +48,8 @@ abstract class $TonetagProviderStateCopyWith<$Res> {
       TonetagChannel channel,
       int volume,
       TextEditingController amountController,
-      TonetagPaymentState paymentState,
+      TonetagConnectionState connectionState,
+      TransferedDataType sentDataType,
       List<String> receivedRequests,
       List<TransactionSuccess> transactionSuccesses,
       Map<String, int> receiveRequestsCounter});
@@ -71,7 +74,8 @@ class _$TonetagProviderStateCopyWithImpl<$Res,
     Object? channel = null,
     Object? volume = null,
     Object? amountController = null,
-    Object? paymentState = null,
+    Object? connectionState = null,
+    Object? sentDataType = null,
     Object? receivedRequests = null,
     Object? transactionSuccesses = null,
     Object? receiveRequestsCounter = null,
@@ -97,10 +101,14 @@ class _$TonetagProviderStateCopyWithImpl<$Res,
           ? _value.amountController
           : amountController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      paymentState: null == paymentState
-          ? _value.paymentState
-          : paymentState // ignore: cast_nullable_to_non_nullable
-              as TonetagPaymentState,
+      connectionState: null == connectionState
+          ? _value.connectionState
+          : connectionState // ignore: cast_nullable_to_non_nullable
+              as TonetagConnectionState,
+      sentDataType: null == sentDataType
+          ? _value.sentDataType
+          : sentDataType // ignore: cast_nullable_to_non_nullable
+              as TransferedDataType,
       receivedRequests: null == receivedRequests
           ? _value.receivedRequests
           : receivedRequests // ignore: cast_nullable_to_non_nullable
@@ -131,7 +139,8 @@ abstract class _$$_TonetagProviderStateCopyWith<$Res>
       TonetagChannel channel,
       int volume,
       TextEditingController amountController,
-      TonetagPaymentState paymentState,
+      TonetagConnectionState connectionState,
+      TransferedDataType sentDataType,
       List<String> receivedRequests,
       List<TransactionSuccess> transactionSuccesses,
       Map<String, int> receiveRequestsCounter});
@@ -153,7 +162,8 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
     Object? channel = null,
     Object? volume = null,
     Object? amountController = null,
-    Object? paymentState = null,
+    Object? connectionState = null,
+    Object? sentDataType = null,
     Object? receivedRequests = null,
     Object? transactionSuccesses = null,
     Object? receiveRequestsCounter = null,
@@ -179,10 +189,14 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
           ? _value.amountController
           : amountController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      paymentState: null == paymentState
-          ? _value.paymentState
-          : paymentState // ignore: cast_nullable_to_non_nullable
-              as TonetagPaymentState,
+      connectionState: null == connectionState
+          ? _value.connectionState
+          : connectionState // ignore: cast_nullable_to_non_nullable
+              as TonetagConnectionState,
+      sentDataType: null == sentDataType
+          ? _value.sentDataType
+          : sentDataType // ignore: cast_nullable_to_non_nullable
+              as TransferedDataType,
       receivedRequests: null == receivedRequests
           ? _value._receivedRequests
           : receivedRequests // ignore: cast_nullable_to_non_nullable
@@ -201,14 +215,17 @@ class __$$_TonetagProviderStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_TonetagProviderState implements _TonetagProviderState {
+class _$_TonetagProviderState
+    with DiagnosticableTreeMixin
+    implements _TonetagProviderState {
   const _$_TonetagProviderState(
       {required this.data,
       required this.player,
       required this.channel,
       required this.volume,
       required this.amountController,
-      this.paymentState = TonetagPaymentState.paying,
+      this.connectionState = TonetagConnectionState.idle,
+      this.sentDataType = TransferedDataType.unknown,
       final List<String> receivedRequests = const <String>[],
       final List<TransactionSuccess> transactionSuccesses =
           const <TransactionSuccess>[],
@@ -229,7 +246,10 @@ class _$_TonetagProviderState implements _TonetagProviderState {
   final TextEditingController amountController;
   @override
   @JsonKey()
-  final TonetagPaymentState paymentState;
+  final TonetagConnectionState connectionState;
+  @override
+  @JsonKey()
+  final TransferedDataType sentDataType;
   final List<String> _receivedRequests;
   @override
   @JsonKey()
@@ -261,8 +281,26 @@ class _$_TonetagProviderState implements _TonetagProviderState {
   }
 
   @override
-  String toString() {
-    return 'TonetagProviderState(data: $data, player: $player, channel: $channel, volume: $volume, amountController: $amountController, paymentState: $paymentState, receivedRequests: $receivedRequests, transactionSuccesses: $transactionSuccesses, receiveRequestsCounter: $receiveRequestsCounter)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'TonetagProviderState(data: $data, player: $player, channel: $channel, volume: $volume, amountController: $amountController, connectionState: $connectionState, sentDataType: $sentDataType, receivedRequests: $receivedRequests, transactionSuccesses: $transactionSuccesses, receiveRequestsCounter: $receiveRequestsCounter)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TonetagProviderState'))
+      ..add(DiagnosticsProperty('data', data))
+      ..add(DiagnosticsProperty('player', player))
+      ..add(DiagnosticsProperty('channel', channel))
+      ..add(DiagnosticsProperty('volume', volume))
+      ..add(DiagnosticsProperty('amountController', amountController))
+      ..add(DiagnosticsProperty('connectionState', connectionState))
+      ..add(DiagnosticsProperty('sentDataType', sentDataType))
+      ..add(DiagnosticsProperty('receivedRequests', receivedRequests))
+      ..add(DiagnosticsProperty('transactionSuccesses', transactionSuccesses))
+      ..add(DiagnosticsProperty(
+          'receiveRequestsCounter', receiveRequestsCounter));
   }
 
   @override
@@ -276,8 +314,10 @@ class _$_TonetagProviderState implements _TonetagProviderState {
             (identical(other.volume, volume) || other.volume == volume) &&
             (identical(other.amountController, amountController) ||
                 other.amountController == amountController) &&
-            (identical(other.paymentState, paymentState) ||
-                other.paymentState == paymentState) &&
+            (identical(other.connectionState, connectionState) ||
+                other.connectionState == connectionState) &&
+            (identical(other.sentDataType, sentDataType) ||
+                other.sentDataType == sentDataType) &&
             const DeepCollectionEquality()
                 .equals(other._receivedRequests, _receivedRequests) &&
             const DeepCollectionEquality()
@@ -294,7 +334,8 @@ class _$_TonetagProviderState implements _TonetagProviderState {
       channel,
       volume,
       amountController,
-      paymentState,
+      connectionState,
+      sentDataType,
       const DeepCollectionEquality().hash(_receivedRequests),
       const DeepCollectionEquality().hash(_transactionSuccesses),
       const DeepCollectionEquality().hash(_receiveRequestsCounter));
@@ -314,7 +355,8 @@ abstract class _TonetagProviderState implements TonetagProviderState {
       required final TonetagChannel channel,
       required final int volume,
       required final TextEditingController amountController,
-      final TonetagPaymentState paymentState,
+      final TonetagConnectionState connectionState,
+      final TransferedDataType sentDataType,
       final List<String> receivedRequests,
       final List<TransactionSuccess> transactionSuccesses,
       final Map<String, int> receiveRequestsCounter}) = _$_TonetagProviderState;
@@ -330,7 +372,9 @@ abstract class _TonetagProviderState implements TonetagProviderState {
   @override
   TextEditingController get amountController;
   @override
-  TonetagPaymentState get paymentState;
+  TonetagConnectionState get connectionState;
+  @override
+  TransferedDataType get sentDataType;
   @override
   List<String> get receivedRequests;
   @override

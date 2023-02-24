@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TransactionSuccess {
   String get txnId => throw _privateConstructorUsedError;
+  String get receiverId => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +31,7 @@ abstract class $TransactionSuccessCopyWith<$Res> {
           TransactionSuccess value, $Res Function(TransactionSuccess) then) =
       _$TransactionSuccessCopyWithImpl<$Res, TransactionSuccess>;
   @useResult
-  $Res call({String txnId, String amount});
+  $Res call({String txnId, String receiverId, String amount});
 }
 
 /// @nodoc
@@ -47,12 +48,17 @@ class _$TransactionSuccessCopyWithImpl<$Res, $Val extends TransactionSuccess>
   @override
   $Res call({
     Object? txnId = null,
+    Object? receiverId = null,
     Object? amount = null,
   }) {
     return _then(_value.copyWith(
       txnId: null == txnId
           ? _value.txnId
           : txnId // ignore: cast_nullable_to_non_nullable
+              as String,
+      receiverId: null == receiverId
+          ? _value.receiverId
+          : receiverId // ignore: cast_nullable_to_non_nullable
               as String,
       amount: null == amount
           ? _value.amount
@@ -70,7 +76,7 @@ abstract class _$$_TransactionSuccessCopyWith<$Res>
       __$$_TransactionSuccessCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String txnId, String amount});
+  $Res call({String txnId, String receiverId, String amount});
 }
 
 /// @nodoc
@@ -85,12 +91,17 @@ class __$$_TransactionSuccessCopyWithImpl<$Res>
   @override
   $Res call({
     Object? txnId = null,
+    Object? receiverId = null,
     Object? amount = null,
   }) {
     return _then(_$_TransactionSuccess(
       txnId: null == txnId
           ? _value.txnId
           : txnId // ignore: cast_nullable_to_non_nullable
+              as String,
+      receiverId: null == receiverId
+          ? _value.receiverId
+          : receiverId // ignore: cast_nullable_to_non_nullable
               as String,
       amount: null == amount
           ? _value.amount
@@ -102,17 +113,32 @@ class __$$_TransactionSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_TransactionSuccess implements _TransactionSuccess {
-  const _$_TransactionSuccess({required this.txnId, required this.amount});
+class _$_TransactionSuccess extends _TransactionSuccess
+    with DiagnosticableTreeMixin {
+  const _$_TransactionSuccess(
+      {required this.txnId, required this.receiverId, required this.amount})
+      : super._();
 
   @override
   final String txnId;
   @override
+  final String receiverId;
+  @override
   final String amount;
 
   @override
-  String toString() {
-    return 'TransactionSuccess(txnId: $txnId, amount: $amount)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'TransactionSuccess(txnId: $txnId, receiverId: $receiverId, amount: $amount)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TransactionSuccess'))
+      ..add(DiagnosticsProperty('txnId', txnId))
+      ..add(DiagnosticsProperty('receiverId', receiverId))
+      ..add(DiagnosticsProperty('amount', amount));
   }
 
   @override
@@ -121,11 +147,13 @@ class _$_TransactionSuccess implements _TransactionSuccess {
         (other.runtimeType == runtimeType &&
             other is _$_TransactionSuccess &&
             (identical(other.txnId, txnId) || other.txnId == txnId) &&
+            (identical(other.receiverId, receiverId) ||
+                other.receiverId == receiverId) &&
             (identical(other.amount, amount) || other.amount == amount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, txnId, amount);
+  int get hashCode => Object.hash(runtimeType, txnId, receiverId, amount);
 
   @JsonKey(ignore: true)
   @override
@@ -135,13 +163,17 @@ class _$_TransactionSuccess implements _TransactionSuccess {
           this, _$identity);
 }
 
-abstract class _TransactionSuccess implements TransactionSuccess {
+abstract class _TransactionSuccess extends TransactionSuccess {
   const factory _TransactionSuccess(
       {required final String txnId,
+      required final String receiverId,
       required final String amount}) = _$_TransactionSuccess;
+  const _TransactionSuccess._() : super._();
 
   @override
   String get txnId;
+  @override
+  String get receiverId;
   @override
   String get amount;
   @override

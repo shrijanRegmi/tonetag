@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tonetag_example/enums/tonetag_payment_state.dart';
+import 'package:tonetag_example/enums/transfered_data_type.dart';
 import 'package:tonetag_example/extensions/widget_extension.dart';
 import 'package:tonetag_example/providers/tonetag_provider.dart';
-import 'package:tonetag_example/utils/string_contants.dart';
 import 'package:tonetag_example/widgets/rounded_wave_button.dart';
 import 'package:tonetag_example/widgets/transaction_dialogs.dart';
 
@@ -33,15 +32,15 @@ class _PayOrReceiveScreenState extends ConsumerState<PayOrReceiveScreen> {
             Expanded(
               child: RoundedWaveButton(
                 size: 150.0,
-                text: state.paymentState == TonetagPaymentState.receiving
+                text: state.sentDataType == TransferedDataType.receiveRequest
                     ? 'Receive'
                     : 'Pay',
                 animate: true,
-                bgColor: state.paymentState == TonetagPaymentState.receiving
+                bgColor: state.sentDataType == TransferedDataType.receiveRequest
                     ? Colors.blue
                     : Colors.green,
                 onPressed: (_) {
-                  if (state.paymentState == TonetagPaymentState.receiving) {
+                  if (state.sentDataType == TransferedDataType.receiveRequest) {
                     notifier.stopReceiveRequest();
                   } else {
                     notifier.startReceiveRequest();
@@ -101,9 +100,7 @@ class _PayOrReceiveScreenState extends ConsumerState<PayOrReceiveScreen> {
                           Get.dialog(
                             TransactionDiaglog.sendAmount(
                               controller: state.amountController,
-                              onPressedDone: () => notifier.sendAmount(
-                                data.replaceAll(ksCodeP2P, ''),
-                              ),
+                              onPressedDone: () => notifier.sendAmount(data),
                             ),
                           );
                         });

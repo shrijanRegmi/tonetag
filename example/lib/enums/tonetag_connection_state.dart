@@ -1,0 +1,4 @@
+enum TonetagConnectionState {
+  idle,
+  busy,
+}

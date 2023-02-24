@@ -22,6 +22,7 @@ class TransactionDiaglog extends HookConsumerWidget {
         transactionSuccess = const TransactionSuccess(
           txnId: '',
           amount: '',
+          receiverId: '',
         );
 
   const TransactionDiaglog.transactionSuccess({
@@ -72,6 +73,7 @@ class TransactionDiaglog extends HookConsumerWidget {
     return AlertDialog(
       title: const Text('Transaction Success'),
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
@@ -80,11 +82,30 @@ class TransactionDiaglog extends HookConsumerWidget {
           const SizedBox(
             height: 40.0,
           ),
-          Text('TXN ID: ${transactionSuccess.txnId}'),
+          Text(
+            'TXN ID: ${transactionSuccess.txnId}',
+            style: const TextStyle(
+              fontSize: 12.0,
+            ),
+          ),
           const SizedBox(
             height: 10.0,
           ),
-          Text('AMOUNT: ${transactionSuccess.amount}')
+          Text(
+            'RECEIVER: ${transactionSuccess.receiverId}',
+            style: const TextStyle(
+              fontSize: 12.0,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            'AMOUNT: ${transactionSuccess.amount}',
+            style: const TextStyle(
+              fontSize: 12.0,
+            ),
+          )
         ],
       ),
       actions: [
