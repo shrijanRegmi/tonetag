@@ -9,20 +9,50 @@ let ULTRASONIC_10_BYTE = "ultrasonic10Byte"
 let IVR_14_Byte = "ivr14Byte"
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate, TTToneTagManagerDelegate, TTOnToneTagRecorderDelegate, TTOnToneTagPlayerDelegate {
+@objc class AppDelegate:
+        FlutterAppDelegate,
+        FlutterStreamHandler,
+        TTToneTagManagerDelegate,
+        TTOnToneTagRecorderDelegate,
+        TTOnToneTagPlayerDelegate
+{
     var controller: FlutterViewController? = nil
+    
+    var methodChannel: FlutterMethodChannel? = nil
+    var eventChannel: FlutterEventChannel? = nil
+    var eventSink: FlutterEventSink? = nil
     
     var mToneTagManager: ToneTagManager?
     var mSoundRecorder = TTSoundRecorder()
     var mSoundPlayer = TTSoundPlayer()
     
     func tt(onDataFound string: String!) {
-        
+        let dict = convertToDictionary(text: string)
+        if(dict != nil) {
+            let data = dict!["receivedData"] as? String
+            if(data != nil) {
+                if(eventSink != nil) {
+                    let dataToSend = ["data" : data]
+                    eventSink!(dataToSend)
+                }
+            }
+        }
     }
     
     func ttToneTagManagerError(_ error: Error!) {
         
     }
+    
+    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        eventSink = events
+        return nil
+    }
+    
+    func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        eventSink = nil
+        return nil
+    }
+
 
     
     override func application(
@@ -30,12 +60,17 @@ let IVR_14_Byte = "ivr14Byte"
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         controller = window?.rootViewController as? FlutterViewController
-        let channel = FlutterMethodChannel(
+        
+        methodChannel = FlutterMethodChannel(
             name: "tonetag",
             binaryMessenger: controller!.binaryMessenger
         )
+        eventChannel = FlutterEventChannel(
+            name: "tonetag_event_channel/onDataReceived",
+            binaryMessenger: controller!.binaryMessenger
+        )
       
-        channel.setMethodCallHandler({ [self]
+        methodChannel?.setMethodCallHandler({ [self]
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             switch call.method {
                 case "initializeTonetag":
@@ -66,9 +101,11 @@ let IVR_14_Byte = "ivr14Byte"
                 default:
                     break
           }
-      })
-      GeneratedPluginRegistrant.register(with: self)
-      return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+        })
+        eventChannel?.setStreamHandler(self)
+        
+        GeneratedPluginRegistrant.register(with: self)
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
     
     
@@ -182,5 +219,16 @@ let IVR_14_Byte = "ivr14Byte"
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds) {
             alert.dismiss(animated: true)
         }
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
 }
