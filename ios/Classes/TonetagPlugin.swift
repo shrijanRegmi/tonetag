@@ -26,9 +26,7 @@ public class TonetagPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    func initializeTonetag(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        Toast.show("")
-    }
+    func initializeTonetag(call: FlutterMethodCall, result: @escaping FlutterResult) {}
     
     func startSendingData(call: FlutterMethodCall, result: @escaping FlutterResult) {}
     
