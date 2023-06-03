@@ -56,10 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
           textColor: Colors.white,
           child: isInitializing
               ? const SizedBox(
-                  width: 25.0,
-                  height: 25.0,
+                  width: 16.0,
+                  height: 16.0,
                   child: CircularProgressIndicator(
                     strokeWidth: 1.0,
+                    color: Colors.white,
                   ),
                 )
               : const Text('Start'),
