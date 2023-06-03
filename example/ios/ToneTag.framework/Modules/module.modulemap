@@ -1,6 +1,0 @@
-framework module ToneTag {
-  umbrella header "ToneTag.h"
-
-  export *
-  module * { export * }
-}
