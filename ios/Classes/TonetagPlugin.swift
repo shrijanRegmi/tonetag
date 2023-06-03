@@ -6,23 +6,39 @@ public class TonetagPlugin: NSObject, FlutterPlugin {
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "tonetag", binaryMessenger: registrar.messenger())
-        let instance = TonetagPlugin()›
+        let instance = TonetagPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
             case "initializeTonetag":
-                initializeTonetag(call, result)
+                initializeTonetag(
+                    call: call,
+                    result: result
+                )
             case "startSendingData":
-                startSendingData(call, result)
+                startSendingData(
+                    call: call,
+                    result: result
+                )
             case "stopSendingData":
-                stopSendingData(call, result)
+                stopSendingData(
+                    call: call,
+                    result: result
+                )
             case "startReceivingData":
-                startReceivingData(call, result)
+                startReceivingData(
+                    call: call,
+                    result: result
+                )
             case "stopReceivingData":
-                stopReceivingData(call, result)
+                stopReceivingData(
+                    call: call,
+                    result: result
+                )
             default:
+                break
         }
     }
     
