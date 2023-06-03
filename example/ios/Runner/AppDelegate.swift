@@ -41,39 +41,17 @@ let IVR_14_Byte = "ivr14Byte"
     var mSoundRecorder = TTSoundRecorder()
     var mSoundPlayer = TTSoundPlayer()
     
-    func tt(onDataFound string: String!) {
-        let dict = convertToDictionary(text: string)
-        if(dict != nil) {
-            let data = dict!["receivedData"] as? String
-            if(data != nil) {
-                if(eventSink != nil) {
-                    let dataToSend = ["data" : data]
-                    eventSink!(dataToSend)
-                }
-            }
-        }
-    }
-    
-    func ttToneTagManagerError(_ error: Error!) {
-        
-    }
-    
-    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        eventSink = events
-        return nil
-    }
-    
-    func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        eventSink = nil
-        return nil
-    }
-
-
-    
     override func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        handleTonetag()
+        
+        GeneratedPluginRegistrant.register(with: self)
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+    
+    private func handleTonetag() {
         controller = window?.rootViewController as? FlutterViewController
         
         methodChannel = FlutterMethodChannel(
@@ -118,13 +96,9 @@ let IVR_14_Byte = "ivr14Byte"
           }
         })
         eventChannel?.setStreamHandler(self)
-        
-        GeneratedPluginRegistrant.register(with: self)
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
+    }
     
-    
-    func initializeTonetag(call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func initializeTonetag(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (mToneTagManager == nil) {
             mToneTagManager = ToneTagManager()
             mToneTagManager?.toneTagManagerDelegate = self as TTToneTagManagerDelegate
@@ -148,7 +122,7 @@ let IVR_14_Byte = "ivr14Byte"
         }
     }
     
-    func startSendingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func startSendingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if(mToneTagManager == nil) {
             result(
                 FlutterError(
@@ -170,22 +144,58 @@ let IVR_14_Byte = "ivr14Byte"
         playTune(data: data, player: player, channel: channel, volume: volume)
     }
     
-    func stopSendingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func stopSendingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
         stopTune()
         result(nil)
     }
     
-    func startReceivingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func startReceivingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
         mSoundRecorder.ttStartRecording()
         result(nil)
     }
     
-    func stopReceivingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func stopReceivingData(call: FlutterMethodCall, result: @escaping FlutterResult) {
         mSoundRecorder.ttStopRecording()
         result(nil)
     }
     
-    func playTune(data: String, player: String, channel: Int, volume: Int) {
+    func tt(onDataFound string: String!) {
+        let dict = convertToDictionary(text: string)
+        if(dict != nil) {
+            let data = dict!["receivedData"] as? String
+            if(data != nil) {
+                if(eventSink != nil) {
+                    let dataToSend = ["data" : data]
+                    eventSink!(dataToSend)
+                    return
+                }
+            }
+        }
+        
+        eventSink?(
+            FlutterError(
+                code: "parse-failed",
+                message: "Failed to parse received data",
+                details: nil
+            )
+        )
+    }
+    
+    func ttToneTagManagerError(_ error: Error!) {
+        eventSink?(error)
+    }
+    
+    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        eventSink = events
+        return nil
+    }
+    
+    func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        eventSink = nil
+        return nil
+    }
+    
+    private func playTune(data: String, player: String, channel: Int, volume: Int) {
         var vol = volume;
         if(vol > 100) {
           vol = 100
@@ -219,11 +229,11 @@ let IVR_14_Byte = "ivr14Byte"
         }
     }
     
-    func stopTune() {
+    private func stopTune() {
         mSoundPlayer.ttStop();
     }
     
-    func showToast(controller: UIViewController, message : String, seconds: Double) {
+    private func showToast(controller: UIViewController, message : String, seconds: Double) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.view.backgroundColor = UIColor.black
         alert.view.alpha = 0.6
